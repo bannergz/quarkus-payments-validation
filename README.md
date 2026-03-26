@@ -43,14 +43,14 @@ src/main/java/com/example/<service>/
 
 ### Microservices
 
-#### ms-payments (port 8080)
+#### ms-payments (port 3000)
 
 - Exposes a **GraphQL API** to create and retrieve transactions
 - Persists transactions in PostgreSQL via **Hibernate ORM with Panache**
 - Publishes `transaction-validation-request` events to Kafka
 - Consumes `transaction-validation-response` events to update transaction status
 
-#### ms-frauds (port 8081 → internal 8080)
+#### ms-frauds (port 3001 → internal 8080)
 
 - Consumes `transaction-validation-request` events from Kafka
 - Applies fraud rules: **value > 1000 → REJECTED**, otherwise **APPROVED**
@@ -83,19 +83,10 @@ make me-down
 ### Step by step
 
 ```bash
-# 1. Create Docker network
-docker network create payments-network
+# 1. Create Docker network, Start Postgres, Kafka, Zookeeper, Schema Registry and registry schema/topics
+make me-happy
 
-# 2. Start Postgres, Kafka, Zookeeper, Schema Registry
-make infra-up
-
-# 3. Register JSON schemas in Schema Registry
-make schema
-
-# 4. Create Kafka topics
-make kafka-topics
-
-# 5. Build and start microservices
+# 2. Build and start microservices
 make services-up
 ```
 
