@@ -7,6 +7,9 @@ FROM maven:3.9.6-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
+# Cache busting arg to force rebuild on each docker compose build
+ARG FORCE_REBUILD=unknown
+
 # Copy POM file first for layer caching of Maven dependencies
 COPY pom.xml .
 COPY checkstyle.xml .

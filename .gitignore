@@ -1,3 +1,4 @@
+.idea
 target/
 .mvn/wrapper/
 *.class
@@ -111,4 +112,5 @@ mongodb/
 
 # TernJS port file
 .tern-port
+./ms-frauds/.idea/compiler.xml
 

@@ -67,85 +67,30 @@ src/main/java/com/example/<service>/
 - Java 21 (for local development)
 - Maven 3.9+
 
-### Start everything
-
-```bash
-# Create network + start infra + register schemas + create topics + start services
-make me-happy
-```
-
-### Stop everything
-
-```bash
-make me-down
-```
-
-### Step by step
-
-```bash
-# 1. Create Docker network, Start Postgres, Kafka, Zookeeper, Schema Registry and registry schema/topics
-make me-happy
-
-# 2. Build and start microservices
-make services-up
-```
-
----
-
 ## Development
 
 ### Run locally (without Docker for services)
 
 ```bash
-# Start infrastructure only
-make infra-up
-make schema
-make kafka-topics
+# Create Docker network, Start Postgres, Kafka, Zookeeper, Schema Registry and registry schema/topics
+make me-happy
 
 # Run ms-payments in dev mode (live reload)
 cd ms-payments
-mvn quarkus:dev
+mvn quarkus:dev -Dquarkus.http.port=3000
 
 # Run ms-frauds in dev mode (separate terminal)
 cd ms-frauds
-mvn quarkus:dev -Dquarkus.http.port=8082
+mvn quarkus:dev -Dquarkus.http.port=3001
 ```
 
 Quarkus Dev Services will automatically start **PostgreSQL** and **Kafka** via Testcontainers when running tests.
 
----
-
-## Testing
-
-```bash
-# Run all tests
-make test-all
-
-# Or per service
-make test-payments
-make test-frauds
-```
-
-Tests use **Quarkus Dev Services** (Testcontainers) — no manual infrastructure setup needed.
-
----
-
-## Linting
-
-```bash
-# Lint all services
-make lint-all
-
-# Or per service
-make lint-payments
-make lint-frauds
-```
-
----
-
 ## GraphQL API (ms-payments)
 
-GraphQL UI available at: `http://localhost:8080/q/graphql-ui`
+GraphQL UI available at: `http://localhost:3000/q/graphql-ui`
+
+You can test the example requests by importing our [Postman collection](docs/TransactionValidator.postman_collection.json).
 
 ### Create a transaction
 

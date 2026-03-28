@@ -5,8 +5,10 @@ import com.example.frauds.domain.model.TransactionStatus;
 import com.example.frauds.domain.model.TransactionType;
 import com.example.frauds.domain.port.in.ValidateFraudUseCase;
 import com.example.frauds.infrastructure.adapter.in.messaging.dto.TransactionValidationRequestDto;
+import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.annotation.PostConstruct;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.jboss.logging.Logger;
@@ -20,6 +22,7 @@ import java.util.concurrent.CompletionStage;
  * Triggers fraud validation on each received transaction using Confluent JSON
  * Schema serde.
  */
+@Startup
 @ApplicationScoped
 public class TransactionValidationRequestConsumer {
 
@@ -27,6 +30,11 @@ public class TransactionValidationRequestConsumer {
 
   @Inject
   ValidateFraudUseCase validateFraudUseCase;
+
+  @PostConstruct
+  public void init() {
+    LOG.info("TransactionValidationRequestConsumer initialized - listening on topic: transaction-validation-request");
+  }
 
   @Incoming("transaction-validation-request")
   public CompletionStage<Void> consume(Message<TransactionValidationRequestDto> message) {
