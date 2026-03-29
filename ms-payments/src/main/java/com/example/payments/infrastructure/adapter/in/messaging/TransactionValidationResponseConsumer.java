@@ -4,6 +4,7 @@ import com.example.payments.domain.model.TransactionStatus;
 import com.example.payments.domain.port.in.UpdateTransactionStatusUseCase;
 import com.example.payments.infrastructure.adapter.in.messaging.dto.TransactionValidationResponseDto;
 
+import io.smallrye.reactive.messaging.annotations.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.annotation.PostConstruct;
@@ -39,6 +40,7 @@ public class TransactionValidationResponseConsumer {
   }
 
   @Incoming("transaction-validation-response")
+  @Blocking
   public CompletionStage<Void> onTransactionValidationResponse(Message<TransactionValidationResponseDto> message) {
     System.out.println(">>> onTransactionValidationResponse CALLED <<<");
     LOG.info(">>> onTransactionValidationResponse CALLED - Starting to process message");
